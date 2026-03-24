@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label for="inputValor">A</label>
+    <input type="number" name="inputValor" id="inputValor">
+    <br>
+    <label for="inputValorb">B</label>
+    <input type="number" name="inputValorb" id="inputValorb">
+    <br>
+    <label for="inputValorc">C</label>
+    <input type="number" name="inputValorc" id="inputValorc">
+    <br>
+    <input type="button" value="Calcular" onclick="funcaoCalcular()">
+    <br>
+    <label for="saida">X1=</label>
+    <span id="saida"></span>
+    <br>
+    <label for="saida2">X2=</label>
+    <span id="saida2"></span>
+<script>
+    function funcaoCalcular(){
+        let a=parseFloat(document.getElementById("inputValor").value);
+        let b=parseFloat(document.getElementById("inputValorb").value);
+        let c=parseFloat(document.getElementById("inputValorc").value);
+   
+        let delta = (b * b) - (4 * a * c);
+ if (delta < 0) {
+        document.getElementById("saida").innerHTML = "Sem raízes reais";
+        document.getElementById("saida2").innerHTML = "";
+        return;
+    }
+    
+         let x1 = (-b + Math.sqrt(delta)) / (2 * a);
+         let x2 = (-b - Math.sqrt(delta)) / (2 * a);
+
+        document.getElementById("saida").innerHTML = x1;
+        document.getElementById("saida2").innerHTML = x2;
+    }
+
+
+</script>
+
+
+</body>
+</html>
