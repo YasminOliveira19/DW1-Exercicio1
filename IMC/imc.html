@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link rel="stylesheet" href="imc.css">
+</head>
+
+<body>
+
+    <header>
+        Exemplo do uso de tags semânticas e CSS
+    </header>
+
+<main>
+<section>
+<h1>IMC</h1>
+
+    <label for="inputpeso">Peso(Kg)</label>
+    <input type="number" name="inputpeso" id="inputpeso">
+    <br>
+    <label for="inputaltura">Altura(M)</label>
+    <input type="number" name="inputaltura" id="inputaltura">
+    <br><br>
+    <input type="button" value="Calcular" onclick="funcaoCalcular()">
+    <br><br>
+    <label for="saida">IMC=</label>
+    <span id="saida"></span>
+    <br>
+    
+</section>
+</main>
+
+    <footer id="footer">
+        <span id="mensagem">Preencha os valores e calcule</span>
+    </footer>
+
+<script src="imc.js"></script>
+
+
+</body>
+</html>
