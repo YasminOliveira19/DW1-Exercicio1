@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Placar</title>
+  <link rel="stylesheet" href="placar.css">
+</head>
+<body>
+
+  <div class="placar">
+    <div class="time">
+      <h2>Time A</h2>
+      <p id="scoreA">0</p>
+      <button onclick="addPoint('A')">+1</button>
+      <button onclick="removePoint('A')">-1</button>
+    </div>
+
+    <div class="time">
+      <h2>Time B</h2>
+      <p id="scoreB">0</p>
+      <button onclick="addPoint('B')">+1</button>
+      <button onclick="removePoint('B')">-1</button>
+    </div>
+</div>
+<div class="controles">
+  <button onclick="resetScore()">Resetar</button>
+</div>
+  <script src="placar.js"></script>
+</body>
+</html>
