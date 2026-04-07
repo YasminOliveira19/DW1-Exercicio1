@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="est.css">
+</head>
+<body>
+
+<main>
+<section>
+<h1>Estacionamento</h1>
+
+    <label for="inputh"> Horas estacionadas:</label>
+    <input type="number" name="inputh" id="inputh">
+    <br><br>
+    <label for="inputc"> Carro grande:</label>
+    <input type="checkbox" name="inputc" id="inputc">
+    <br><br>
+    <label for="inputcli"> Cliente frequente:</label>
+    <input type="checkbox" name="inputcli" id="inputcli">
+    <br><br>
+    <input type="button" value="Calcular" onclick="funcaoCalcular()">
+    <br>
+    <label for="saida"></label>
+    <span id="saida"></span>
+    <br>
+    </section>
+</main>
+
+    <footer id="footer">
+        <span id="mensagem">Preencha os campos a cima e calcule</span>
+    </footer>
+
+<script src="est.js"></script>
+
+
+</body>
+</html>

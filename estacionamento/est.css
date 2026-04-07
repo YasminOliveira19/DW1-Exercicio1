@@ -1,0 +1,99 @@
+ body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: linear-gradient(135deg, #b71c1c, #e53935);
+        color: #333;
+    }
+
+    header {
+        background-color: #6d0019; /* bordô elegante */
+        color: white;
+        text-align: center;
+        padding: 25px;
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .container {
+        background: white;
+        width: 320px;
+        margin: 60px auto;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        transition: transform 0.2s;
+    }
+
+    .container:hover {
+        transform: scale(1.02);
+    }
+
+    h3 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #6d0019;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    input[type="number"]:focus {
+        border-color: #e53935;
+        box-shadow: 0 0 5px rgba(229,57,53,0.5);
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 10px 0;
+        cursor: pointer;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 15px;
+        background: linear-gradient(135deg, #b71c1c, #e53935);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    #resposta {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: #6d0019;
+    }
+
+    footer {
+        background: white;
+        text-align: center;
+        padding: 15px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        font-size: 14px;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    }
