@@ -1,0 +1,100 @@
+/* FUNDO */
+body {
+    margin: 0;
+    font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+    background: repeating-linear-gradient(
+        45deg,
+        #ff0000,
+        #ff0000 20px,
+        #ffffff 20px,
+        #ffffff 40px
+    );
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* BLOCO CENTRAL (tipo plaquinha) */
+main {
+    background: #fff8dc; /* amarelinho de comida */
+    padding: 25px;
+    border-radius: 20px;
+    width: 330px;
+    text-align: center;
+    border: 4px solid #b22222;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* TÍTULO */
+h1 {
+    margin-bottom: 20px;
+    color: #b22222;
+    font-size: 30px;
+    text-shadow: 2px 2px 0 #350d0d;
+}
+
+/* LABEL */
+label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 5px;
+    color: #8b0000;
+    font-weight: bold;
+    text-align: left;
+}
+
+/* INPUT */
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed #b22222;
+    border-radius: 10px;
+    background: #fff;
+    transition: 0.2s;
+}
+
+/* Foco */
+input[type="number"]:focus {
+    border-color: #ff0000;
+    background: #fff5f5;
+    outline: none;
+}
+
+/* BOTÃO */
+input[type="button"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 18px;
+    background: linear-gradient(90deg, #ff0000, #da312b);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Hover */
+input[type="button"]:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+/* RESULTADO */
+#saida {
+    display: block;
+    margin-top: 18px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #b22222;
+}
+
+/* FOOTER */
+footer {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #8b0000;
+}
