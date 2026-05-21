@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Enviar Imagem e Mensagens</title>
+    <link rel="stylesheet" href="cliente.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Configurações de Conexão</h1>
+        <label for="enderecoServidorInput">Endereço do Servidor:</label>
+        <input type="text" id="enderecoServidorInput" placeholder="Digite o endereço do servidor" value="localhost">
+
+        <label for="inputPorta">Porta:</label>
+        <input type="text" id="inputPorta" placeholder="Digite a porta" value="3000">
+        <br>
+        <label for="inputRA">RA:</label>
+        <input type="number" id="inputRA" placeholder="Digite seu RA">
+        <br>
+        <label for="inputNome">Nome:</label>
+        <input type="text" id="inputNome" placeholder="Digite seu nome">
+        <br>
+        <label for="inputImagem">Selecione a Imagem:</label>
+        <input type="file" id="inputImagem" accept="image/*"><br><br>
+        <button onclick="enviarImagem()">Enviar Imagem</button>
+        <br>
+        <label for="inputN1">Nota1:</label>
+        <input type="number" id="inputN1" placeholder="Digite a nota 1">
+        <br>
+        <label for="inputN2">Nota2:</label>
+        <input type="number" id="inputN2" placeholder="Digite a nota 2">
+        <br>
+        <label for="inputN3">Nota3:</label>
+        <input type="number" id="inputN3" placeholder="Digite a nota 3">
+        <br>
+        <label for="inputN4">Nota4:</label>
+        <input type="number" id="inputN4" placeholder="Digite a nota 4">
+        <br>
+
+        <button type="button" onclick="enviarMensagem()">Calcular</button>
+
+        <div id="respostaDoServidor" class="resposta"></div>
+        <div id="respostaImagem" class="resposta"></div>
+    </div>
+    <script>
+        async function enviarImagem() {
+            const enderecoServidor = document.getElementById('enderecoServidorInput').value;
+            const porta = document.getElementById('inputPorta').value;
+            const inputImagem = document.getElementById('inputImagem');
+            const respostaDiv = document.getElementById("respostaImagem");
+
+            if (inputImagem.files.length === 0) {
+                respostaDiv.className = "resposta aviso"; // Classe amarela
+                respostaDiv.innerHTML = "Por favor, selecione uma imagem primeiro!";
+                return;
+            }
+
+            const arquivoImagem = inputImagem.files[0];
+            const formData = new FormData();
+            formData.append('foto', arquivoImagem);
+
+            try {
+                respostaDiv.className = "resposta";
+                respostaDiv.innerHTML = "Enviando arquivo...";
+
+                const response = await fetch(`http://${enderecoServidor}:${porta}/enviar-imagem`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Falha na resposta do servidor');
+                }
+
+                const data = await response.json();
+
+                // Define a classe de sucesso (Verde) e atualiza o texto permanentemente
+                respostaDiv.className = "resposta sucesso";
+                respostaDiv.innerHTML = `<b>${data.mensagem}</b><br>Salvo no servidor como: <i>${data.nomeArquivo}</i>`;
+
+            } catch (error) {
+                console.error('Erro:', error);
+                // Define a classe de erro (Vermelho)
+                respostaDiv.className = "resposta erro";
+                respostaDiv.innerHTML = "Erro de comunicação: Não foi possível salvar a imagem no servidor.";
+            }
+        }
+
+        // --- FUNÇÃO DE MÉDIA ---
+        async function enviarMensagem() {
+
+            const enderecoServidor = document.getElementById('enderecoServidorInput').value;
+            const porta = document.getElementById('inputPorta').value;
+            const respostaDiv = document.getElementById("respostaDoServidor");
+
+            const ra = document.getElementById('inputRA').value;
+            const nome = document.getElementById('inputNome').value;
+
+            const n1 = parseFloat(document.getElementById('inputN1').value);
+            const n2 = parseFloat(document.getElementById('inputN2').value);
+            const n3 = parseFloat(document.getElementById('inputN3').value);
+            const n4 = parseFloat(document.getElementById('inputN4').value);
+
+            // Validação
+            if (isNaN(n1) || isNaN(n2) || isNaN(n3) || isNaN(n4) ||
+                n1 > 10 || n1 < 0 ||
+                n2 > 10 || n2 < 0 ||
+                n3 > 10 || n3 < 0 ||
+                n4 > 10 || n4 < 0
+            ) {
+                respostaDiv.className = "resposta aviso";
+                respostaDiv.innerHTML = "Por favor, insira notas válidas.";
+                return;
+            }
+
+            // Média
+            const media = (n1 + n2 + n3 + n4) / 4;
+
+            // Situação
+            const situacao = media >= 6.0 ? "Aprovado" : "Reprovado";
+
+            // Pacote
+            const meuPacoteDeDados = {
+                ra,
+                nome,
+                n1,
+                n2,
+                n3,
+                n4,
+                media,
+                situacao
+            };
+
+            try {
+
+                respostaDiv.className = "resposta";
+                respostaDiv.innerHTML = "Processando cálculo...";
+
+                const response = await fetch(`http://${enderecoServidor}:${porta}/enviar-mensagem`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(meuPacoteDeDados),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Erro no servidor");
+                }
+
+                respostaDiv.className = "resposta sucesso";
+                respostaDiv.innerHTML =
+                    `Cálculo concluído! <br>
+                    Nome: ${nome} <br>
+                    RA: ${ra} <br>
+                    Média: ${media.toFixed(2)} <br>
+                    Situação: ${situacao}`;
+
+            } catch (error) {
+
+                console.error('Erro:', error);
+
+                respostaDiv.className = "resposta erro";
+
+                respostaDiv.innerHTML = "Erro ao se comunicar com o servidor.";
+            }
+        }
+    </script>
+</body>
+
+</html>
