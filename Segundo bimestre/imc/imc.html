@@ -35,7 +35,7 @@
                 <div class="dados-item">
                     <label for="inputAltura">Altura:</label>
                     <input type="text" id="inputAltura" name="altura" placeholder="Digite a altura">
-                </div>  
+                </div>
             </div>
 
             <label for="inputImagem">Selecione sua Foto:</label>
@@ -102,12 +102,12 @@
             // o formData é uma estrutura que facilita o envio de dados, incluindo arquivos, em requisições HTTP POST
             // analogia, formData é uma mala onde podemos colocar vários itens (dados e a foto) e enviar tudo de uma vez para o servidor
             const formData = new FormData();
-            
+
             formData.append('cpf', cpf);
             formData.append('nome', nome);
             formData.append('peso', peso);
             formData.append('altura', altura);
-            
+
             if (inputImagem.files.length > 0) { // Verifica se um arquivo de imagem foi selecionado
                 formData.append('foto', inputImagem.files[0]);
             }
@@ -129,9 +129,26 @@
 
                 // Define a classe de sucesso (Verde) e atualiza o texto permanentemente
                 respostaDiv.className = "resposta sucesso";
-                respostaDiv.innerHTML = `<b>${data.mensagem}</b><br>Cliente: ${nome} (CPF: ${cpf})<br>Peso: ${peso} <br>Altura: ${altura} <br>IMC: ${peso / altura * altura}<br>${data.nomeArquivo ? 'Foto salva como: ' + data.nomeArquivo : 'Nenhuma foto enviada'}`;
+                respostaDiv.innerHTML = `
+                <b>${data.mensagem}</b><br>
 
-            
+                Cliente: ${data.cliente.nome}<br>
+
+                CPF: ${data.cliente.cpf}<br>
+
+                Peso: ${peso} kg<br>
+
+                Altura: ${altura} m<br>
+
+                IMC: ${data.cliente.imc}<br>
+
+                Situação: ${data.cliente.situacao}<br>
+
+                ${data.nomeArquivo
+                ? 'Foto salva como: ' + data.nomeArquivo
+                : 'Nenhuma foto enviada'}
+                `;
+
             } catch (error) {
                 console.error('Erro:', error);
                 // Define a classe de erro (Vermelho)

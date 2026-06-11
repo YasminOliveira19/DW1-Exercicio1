@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lojinha da Vovó - Painel Cliente</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <h1>Lojinha da Vovó - Sistema de Comunicação</h1>
+
+    <div class="container">
+        <h3>1. Consulta de Reposição de Estoque</h3>
+        <p>Verifique o que a Dispensa Básica precisa que seja produzido.</p>
+        <button onclick="verificarEstoque()">Verificar Necessidades</button>
+        <div id="resultadoEstoque" class="resultado">Aguardando requisição de estoque...</div>
+        <br><br><br>
+        <h3>2. Envio de Bilhetes (Mensagens Gerais)</h3>
+        <p>Envie um recado avulso para a Servidorina (Ex: <em>vovó</em>, <em>chegou</em>).</p>
+        <label for="inputMensagem">Bilhete:</label>
+        <input type="text" id="inputMensagem" placeholder="Ex: vovó">
+        <button onclick="enviarMensagem()">Enviar com Internetina</button>
+        <div id="resultadoMensagem" class="resultado">Aguardando resposta da vovó...</div>
+    </div>
+
+    <script>
+        const enderecoServidor = 'localhost';
+        const porta = '3001';
+        const urlApi = `http://${enderecoServidor}:${porta}/api/mensagens`;
+
+        // Consulta de estoque: Envia o bilhete específico "situacao" via POST
+        async function verificarEstoque() {
+            try {
+                document.getElementById('resultadoEstoque').innerHTML = 'Internetina correndo pela floresta...';
+
+                const response = await fetch(urlApi, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mensagem: "situacao" })
+                });
+
+                const data = await response.json();
+
+                if (data.status === "sucesso") {
+                    // Trata a quebra de linha da string amigável vinda do backend
+                    const mensagemFormatada = data.mensagem.replace(/\n/g, '<br>');
+                    document.getElementById('resultadoEstoque').innerHTML = `<div class="sucesso"><strong>Resposta da Dispensa:</strong><br>${mensagemFormatada}</div>`;
+                } else {
+                    document.getElementById('resultadoEstoque').innerHTML = `<span class="erro">Erro: ${data.mensagem}</span>`;
+                }
+            } catch (error) {
+                document.getElementById('resultadoEstoque').innerHTML = '<span class="erro">Erro de Conexão com a Internetina! O Lobo pode ter interceptado.</span>';
+            }
+        }
+
+        // Envio de Bilhetes Gerais via POST
+        async function enviarMensagem() {
+            const mensagem = document.getElementById('inputMensagem').value.trim();
+            if (!mensagem) return alert('Não envie bilhetes em branco!');
+
+            try {
+                document.getElementById('resultadoMensagem').innerHTML = 'Internetina levando o bilhete...';
+
+                const response = await fetch(urlApi, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mensagem: mensagem })
+                });
+
+                const data = await response.json();
+
+                if (data.status === "sucesso") {
+                    document.getElementById('resultadoMensagem').innerHTML = `<div class="sucesso"><strong>A vovó respondeu:</strong> ${data.mensagem}</div>`;
+                } else {
+                    document.getElementById('resultadoMensagem').innerHTML = `<span class="erro">${data.mensagem}</span>`;
+                }
+            } catch (error) {
+                console.log(error)
+                document.getElementById('resultadoMensagem').innerHTML = '<span class="erro">Erro na comunicação com a Servidorina.</span>';
+            }
+        }
+    </script>
+</body>
+
+</html>
