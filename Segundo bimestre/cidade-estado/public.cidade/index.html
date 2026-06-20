@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Consulta de Cidade-Estado</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <h1>Consulta ao Banco de Dados - Tabela Cidade-Estado</h1>
+
+    <div class="imagem">
+        <img src="cidade.jpg" alt="Cidade">
+    </div>
+    
+    <br>
+
+    <div class="container">
+        <h3>Todas as Cidades</h3>
+        <button onclick="listarTodas()">Listar Todas</button>
+        <div id="resultadoTodas" class="resultado">...</div>
+    </div>
+
+    <div class="container">
+        <h3>Listar as Cidades e seus Estados</h3>
+        <button onclick="ListarPorCidade()">Listar</button>
+        <div id="resultadocidade" class="resultado">...</div>
+    </div>
+
+
+    <div class="container">
+        <h3>Buscar por Nome</h3>
+        <label for="inputNome">Nome:</label>
+        <input type="text" id="inputNome" placeholder="Digite o nome ">
+        <button onclick="buscarPorNome()">Buscar</button>
+        <div id="resultadoNome" class="resultado">...</div>
+    </div>
+
+    <script>
+        const enderecoServidor = 'localhost';
+        const porta = '3001';
+
+        async function listarTodas() {
+            try {
+                const response = await fetch(`http://${enderecoServidor}:${porta}/cidades`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.sucesso && data.cidades.length > 0) {
+                    let tabela = '<table>';
+                    tabela += '<tr><th>id_cidade</th><th>nome_cidade</th></tr>';
+
+                    data.cidades.forEach(cidade => {
+                        tabela += `<tr>
+                             <td>${cidade.id_cidade}</td>
+                             <td>${cidade.nome_cidade}</td>
+                        </tr>`;
+                    });
+
+                    tabela += '</table>';
+                    tabela += `<p><strong>Total de registros: ${data.quantidade}</strong></p>`;
+
+                    document.getElementById('resultadoTodas').innerHTML = `
+                        <div class="sucesso">
+                            ${tabela}
+                        </div>
+                    `;
+                } else if (data.sucesso && data.cidades.length === 0) {
+                    document.getElementById('resultadoTodas').innerHTML = '<span>Nenhuma cidade cadastrada</span>';
+                } else {
+                    document.getElementById('resultadoTodas').innerHTML = `<span class="erro">${data.mensagem}</span>`;
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('resultadoTodas').innerHTML = '<span class="erro">Erro na comunicação com o servidor</span>';
+            }
+        }
+
+
+
+        async function ListarPorCidade() {
+            try {
+                const response = await fetch(`http://${enderecoServidor}:${porta}/cidade-estado`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.sucesso && data.cidades.length > 0) {
+                    let tabela = '<table>';
+                    tabela += '<tr><th>id_cidade</th><th>nome_cidade</th><th>sigla_estado</th></tr>';
+
+                    data.cidades.forEach(cidade => {
+
+
+                        tabela += `<tr>
+                           <td>${cidade.id_cidade}</td>
+                           <td>${cidade.nome_cidade}</td>
+                           <td>${cidade.sigla_estado}</td>
+                        </tr>`;
+                    });
+
+                    tabela += '</table>';
+                    tabela += `<p><strong>Total de registros: ${data.quantidade}</strong></p>`;
+
+                    document.getElementById('resultadocidade').innerHTML = `
+                        <div class="sucesso">
+                            ${tabela}
+                        </div>
+                    `;
+                } else if (data.sucesso && data.cidades.length === 0) {
+                    document.getElementById('resultadocidade').innerHTML = '<span>Nenhuma cidade cadastrada</span>';
+                } else {
+                    document.getElementById('resultadocidade').innerHTML = `<span class="erro">${data.mensagem}</span>`;
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('resultadocidade').innerHTML = '<span class="erro">Erro na comunicação com o servidor</span>';
+            }
+        }
+
+        async function buscarPorNome() {
+            const nome = document.getElementById('inputNome').value.trim();
+
+            if (!nome) {
+                document.getElementById('resultadoNome').innerHTML = '<span class="erro">Por favor, digite um nome</span>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://${enderecoServidor}:${porta}/cidade/nome/${encodeURIComponent(nome)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.sucesso) {
+                    let tabela = '<table>';
+                    tabela += '<tr><th>id_cidade</th><th>nome_cidade</th></tr>';
+
+                    data.cidades.forEach(cidade => {
+
+                        tabela += `<tr>
+                           <td>${cidade.id_cidade}</td>
+                           <td>${cidade.nome_cidade}</td>
+                        </tr>`;
+                    });
+
+                    tabela += '</table>';
+                    tabela += `<p><strong>Total encontrado: ${data.quantidade}</strong></p>`;
+
+                    document.getElementById('resultadoNome').innerHTML = `
+                        <div class="sucesso">
+                            ${tabela}
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('resultadoNome').innerHTML = `<span class="erro">${data.mensagem}</span>`;
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('resultadoNome').innerHTML = '<span class="erro">Erro na comunicação com o servidor</span>';
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
