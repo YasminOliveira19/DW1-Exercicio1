@@ -1,0 +1,4 @@
+int;id_carro;10
+String;nome_carro;50
+String;modelo_carro;20
+int;ano;10
